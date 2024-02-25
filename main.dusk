@@ -1,0 +1,26 @@
+start|dusk
+@start|dusk must be at the first line btw
+@start is the first thing that is run when you run dusk, it allows the dusk compiler to see which scripts are associated with it
+@examples
+assign|dawn|dusk examples
+print|dawn
+dassign|dawn
+print|dawn
+print|'this is just printing with text'
+add|ad|1|2
+print|ad
+subtract|sd|1|2
+@subtract and most arithmatic operator's arguments are |variable|val1|val2, the after-math of it will be assigned to the variable given
+print|sd
+multiply|md|1|2
+print|md
+divide|dd|1|2
+print|dd
+@window|name|width|height    not going to do this, but you can
+@interact opens the REPL and gives you straight results for what you right, again I am not going to do this, but you can going to do this but you can.
+mkdir|test
+@mkdir is short for make directory
+time|time
+@gets the local time and assigns it to a variable
+print|time
+@run dusk-1.0-exe NOT dusk-1.0.py, well you can but unless you have everything installed it won't work
