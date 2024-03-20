@@ -17,18 +17,17 @@ print|md
 divide|dd|1|2
 print|dd
 @window|name|width|height    not going to do this, but you can
-@interact opens the REPL and gives you straight results for what you right, again I am not going to do this, but you can going to do this but you can.
-mkdir|test
-@mkdir is short for make directory
+@interact opens the REPL and gives you straight results for what you write, again I am not going to do this, but you can going to do this but you can.
 time|time
 @gets the local time and assigns it to a variable
 print|time
 cdir|exampleFolder
-cfil|exampleFolder|exampleFile
+cfil|exampleFolder|exampleFile|dusk
 writefil|exampleFolder|exampleFile|{
 >start|dusk
 >print|'hello world'
 >assign|t|'this is my first script using dusk!'
 >print|t
 }
+@this is the first multi-line command, indentation is signified by '>' symbol.
 @run dusk-1.0-exe NOT dusk-1.0.py, well you can but unless you have everything installed it won't work
