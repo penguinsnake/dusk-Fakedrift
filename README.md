@@ -1,4 +1,4 @@
-![Screenshot 2024-03-22 212729](https://github.com/Faked2378/dusk/assets/127430703/5495badb-4216-48c0-82b2-189cd208963b)
+![duskLogo](https://github.com/Faked2378/dusk/assets/127430703/2c7709af-fe82-49d3-b8e6-b7e1d0ba4163)
 
 a programming language (very basic for now) written in python
 
