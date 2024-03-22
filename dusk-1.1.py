@@ -1,5 +1,6 @@
-import subprocess
+import subprocess as sub
 import sys
+import ast
 import tkinter as tk
 import time
 import os
@@ -27,39 +28,30 @@ class Dusk:
             'deldir': self._deldir_command,
             'cfil': self._cfil_command,
             'delfil': self._delfil_command,
-            'writefil': self._writefil_command
-            #'function': self._function_command
+            'writefil': self._writefil_command,
+            'scriptint': self._scriptint_command
         }
 
         self.imported_modules = []
         
-#    def _function_command(self, args):
-#        if len(args) < 2:
-#            return "Error: Insufficient arguments for function command"
-#        global function_args
-#        directory = ""
-#        function_args = []
-#        argum = 0
-#        for arg in args:
-#            argum += 1
-#            if arg != "arg":
-#                directory = os.path.join(directory, arg)
-#            else:
-#                break
-#        
-#        function_args = args[argum:]  # All arguments except the last one
-#        # Check if the module file exists
-#        if os.path.exists(f"{directory}.py"):
-#            print(f"Directory: {directory}.py")
-#            print(f"Function arguments: {function_args}")
-#            try:
-#                subprocess.Popen(['python', f"{directory}.py"], universal_newlines=False, shell=True)
-#            except:
-#                print("Error executing function")
-#        else:
-#            print("Error: Invalid directory")
-#
-## WHY DOES THIS NOT WORK? ^^^^
+    def _scriptint_command(self, args):
+        if len(args) < 2:
+            return "Error: Invalid scriptint command. Usage: scriptint <script_name> <arg1> [<arg2> [<arg3>]]"
+        var_name = args[0]
+        script_name = args[1] + '.py'  # Adjust if your naming convention differs
+        script_args = args[2:]
+        
+        try:
+            # Run the script and capture its stdout
+            result = sub.run(['python', script_name, *script_args], capture_output=True, text=True, check=True)
+            # Evaluate the output to Python data structure
+            ovars = ast.literal_eval(result.stdout.strip())
+            # Assign the output to the variables dictionary
+            self.variables[var_name] = ovars
+        except sub.CalledProcessError as e:
+            print(f"Error executing script: {e}")
+        except ValueError:
+            print("Error: Script did not return a valid Python data structure")
 
     def _cdir_command(self, args):
         if len(args) != 1:

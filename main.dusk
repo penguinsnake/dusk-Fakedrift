@@ -31,3 +31,6 @@ writefil|exampleFolder|exampleFile|{
 }
 @this is the first multi-line command, indentation is signified by '>' symbol.
 @run dusk-1.0-exe NOT dusk-1.0.py, well you can but unless you have everything installed it won't work
+scriptint|al|greater|4|10
+print|al
+@doesn't accept any variables yet, but it will be added in later versions
