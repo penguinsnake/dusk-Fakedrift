@@ -1,5 +1,8 @@
-# dusk
-a programming language (very basic for now) written in python
+# Welcome to....
 
 
-feel free to report problems, or ask to become apart of this project or suggest ideas for what to add!
+![dusk-logo](https://github.com/penguinsnake/dusk-Fakedrift/assets/127430703/f5024f40-09e6-4526-a04c-09185ddc5900)
+ㅤ
+ㅤ
+
+dusk is a general purpose language written in python
