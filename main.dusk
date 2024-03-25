@@ -23,7 +23,7 @@ time|time
 print|time
 cdir|exampleFolder
 cfil|exampleFolder|exampleFile|dusk
-writefil|exampleFolder|exampleFile|{
+writefil|exampleFolder|exampleFile|dusk{
 >start|dusk
 >print|'hello world'
 >assign|t|'this is my first script using dusk!'
@@ -34,3 +34,11 @@ writefil|exampleFolder|exampleFile|{
 scriptint|al|greater|4|10
 print|al
 @doesn't accept any variables yet, but it will be added in later versions
+dfunction|test|{
+>assign|a|3
+>assign|b|4
+>multiply|c|a|b
+>print|c
+}
+test|
+@this is a function, it will run the code inside it, one by one upon calling it by the name, in this context the name is: test

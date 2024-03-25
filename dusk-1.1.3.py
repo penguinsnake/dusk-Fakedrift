@@ -9,9 +9,9 @@ class Dusk:
     def __init__(self):
         self.variables = {}
         self.functions = {}
-        self.command_tags = {  # Define command_tags attribute
-            'writefil': True,  # Indicates that multi-line content is expected for writefil command
-            # Add more commands with tags as needed
+        self.command_tags = {  # Define command_tags attribute for multi-line content
+            'writefil': True,
+            'dfunction': True,
         }
         self.commands = {
             'print': self._print_command,
@@ -29,11 +29,12 @@ class Dusk:
             'cfil': self._cfil_command,
             'delfil': self._delfil_command,
             'writefil': self._writefil_command,
-            'scriptint': self._scriptint_command
+            'scriptint': self._scriptint_command,
+            'dfunction': self._function_command
         }
 
         self.imported_modules = []
-        
+
     def _scriptint_command(self, args):
         if len(args) < 2:
             return "Error: Invalid scriptint command. Usage: scriptint <script_name> <arg1> [<arg2> [<arg3>]]"
@@ -74,6 +75,41 @@ class Dusk:
             return f"Error: Directory '{directory_name}' not found."
         except OSError as e:
            return f"Error: {str(e)}"
+
+    def _function_command(self, args):
+        # Check if the command has at least 2 arguments
+        if len(args) < 2:
+            return "Error: Invalid function command. Usage: function <function_name> {<function_body>}"
+
+        # Extract function name and function body
+        function_name = args[0]
+        function_body = ' '.join(args[2:]).strip()  # Combine all arguments except the first one and remove leading/trailing spaces
+        function_body = function_body.replace('{', '').replace('}', '')  # Remove '{' and '}'
+        
+        # Split function body into individual commands based on newline character
+        commands = function_body.split('\n')
+
+        # Initialize lists to store commands and newlines separately
+        command_list = []
+        newline_list = []
+
+        # Iterate through commands and separate commands and newlines
+        for command in commands:
+            if command.startswith('>'):
+                command_list.append(command.lstrip('>'))  # Remove '>' and leading/trailing spaces
+            elif command.strip():  # Check if command is not an empty line
+                newline_list.append(command)
+
+        try:
+            # Add the function to the functions dictionary along with newline commands
+            if newline_list:
+                self.functions[function_name] = (command_list, newline_list)
+            else:
+                self.functions[function_name] = command_list
+            print(self.functions[function_name])
+            return None
+        except Exception as e:
+            return f"Error: {str(e)}"
 
     def _writefil_command(self, args):
         # Check if the command has at least 4 arguments
@@ -281,37 +317,54 @@ class Dusk:
         # Check if the command is a comment (starts with "@")
         if command.startswith("@"):
             return None  # Skip comments
-        
+
         # Parse the command name and arguments
-        command_name, *args = command.split('|')
+        tokens = command.split('|')
+        command_name = tokens[0]
 
-        # Check if the command is a multi-line command
-        is_multi_line = self.command_tags.get(command_name, False)
-        
-        if is_multi_line:
-            # Gather multi-line content until the end tag is encountered
-            multi_line_content = []
-            if file is not None:
-                for line in file:  # Use the provided file object to read multi-line content
-                    if line.strip() == '}':
-                        break
-                    multi_line_content.append(line.strip())
+        # Check if it's a function
+        if command_name in self.functions:
+            # Execute each command in the function body
+            for func_command in self.functions[command_name]:
+                # Parse and execute the command
+                result = self.parse_command(func_command)
+                if result is not None and result != '':
+                    print(result)  # Print command output for debugging
+            
+            # No need to return anything here since the function commands have already been executed
+            return None
 
-            # Pass multi-line content as a single argument to the command execution method
-            result = self.commands[command_name](args + ['\n'.join(multi_line_content)])
-        else:
-            # For single-line commands, pass arguments as usual
-            result = self.commands[command_name](args)
-        
-        return result
+        # Check if it's a standard command
+        if command_name in self.commands:
+            # Check if the command is a multi-line command
+            is_multi_line = self.command_tags.get(command_name, False)
+
+            if is_multi_line:
+                # Gather multi-line content until the end tag is encountered
+                multi_line_content = []
+                if file is not None:
+                    for line in file:  # Use the provided file object to read multi-line content
+                        if line.strip() == '}':
+                            break
+                        multi_line_content.append(line.strip())
+
+                # Pass multi-line content as a single argument to the command execution method
+                return self.commands[command_name](tokens[1:] + ['\n'.join(multi_line_content)])
+            else:
+                # For single-line commands, pass arguments as usual
+                return self.commands[command_name](tokens[1:])
+
+        # If the command is not a recognized function or standard command, return an error
+        return f"Error: Unknown command '{command_name}'"
 
 # Create an instance of the Dusk class
 dusk_lang = Dusk()
 
-# Parse commands from .dusk files
-import glob
+# Parse file of which is askedd
 parsed_files = []
-for file_name in glob.glob("*.dusk"):
+inp = input("which file would you want to run (exclude the .dusk extension)?")
+file_name = f"{inp}.dusk"
+if inp:
     if file_name not in parsed_files:
         print(f"Parsing {file_name}...")
         dusk_lang.parse_file(file_name)
