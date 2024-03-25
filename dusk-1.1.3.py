@@ -4,6 +4,7 @@ import ast
 import tkinter as tk
 import time
 import os
+import math
 
 class Dusk:
     def __init__(self):
@@ -30,10 +31,44 @@ class Dusk:
             'delfil': self._delfil_command,
             'writefil': self._writefil_command,
             'scriptint': self._scriptint_command,
-            'dfunction': self._function_command
+            'dfunction': self._function_command,
+            'sroot': self._sroot_command,
+            'input': self._input_command,
+            'errorthrow': self._error_throw,
         }
 
         self.imported_modules = []
+
+    def _input_command(self, args):
+        if len(args) != 2:
+            return "Error: Invalid input command. Usage: input <variable_name> <message>"
+        var_name = args[0]
+        message = args[1]
+        message = message.replace("'", "")
+        self.variables[var_name] = input(message)
+
+    def _error_throw(self, args):
+        if len(args) != 1:
+            return "Error: Wow an error from the error_throw command, smart. Usage: <message>"
+        message = args[0]
+        message = message.replace("'", "")
+        print(f"Error: {message}")
+        sys.exit()
+
+    def _sroot_command(self, args):
+        if len(args) != 2:
+            return "Error: Invalid sroot command. Usage: sroot <variable_name> <input>"
+        var_name = args[0]
+        input_value = args[1]
+        if input_value in self.variables:
+            input_value = self.variables[input_value]
+        if input_value.isdigit():
+            input_value = int(input_value)
+        elif not str(input_value).isdigit():
+            self.variables[var_name] = "Error: sroot command failed, cannot print"
+            return "Error: Invalid input type. Input must be a positive integer"
+        output = math.sqrt(input_value)
+        self.variables[var_name] = output
 
     def _scriptint_command(self, args):
         if len(args) < 2:
@@ -106,7 +141,6 @@ class Dusk:
                 self.functions[function_name] = (command_list, newline_list)
             else:
                 self.functions[function_name] = command_list
-            print(self.functions[function_name])
             return None
         except Exception as e:
             return f"Error: {str(e)}"
@@ -322,18 +356,6 @@ class Dusk:
         tokens = command.split('|')
         command_name = tokens[0]
 
-        # Check if it's a function
-        if command_name in self.functions:
-            # Execute each command in the function body
-            for func_command in self.functions[command_name]:
-                # Parse and execute the command
-                result = self.parse_command(func_command)
-                if result is not None and result != '':
-                    print(result)  # Print command output for debugging
-            
-            # No need to return anything here since the function commands have already been executed
-            return None
-
         # Check if it's a standard command
         if command_name in self.commands:
             # Check if the command is a multi-line command
@@ -355,14 +377,26 @@ class Dusk:
                 return self.commands[command_name](tokens[1:])
 
         # If the command is not a recognized function or standard command, return an error
-        return f"Error: Unknown command '{command_name}'"
+                    # Check if it's a function
+        elif command_name in self.functions:
+            # Execute each command in the function body
+            for func_command in self.functions[command_name]:
+                # Parse and execute the command
+                result = self.parse_command(func_command)
+                if result is not None and result != '':
+                    print(result)  # Print command output for debugging
+            
+            # No need to return anything here since the function commands have already been executed
+            return None
+        else:
+            return f"Error: Unknown command '{command_name}'"
 
 # Create an instance of the Dusk class
 dusk_lang = Dusk()
 
 # Parse file of which is askedd
 parsed_files = []
-inp = input("which file would you want to run (exclude the .dusk extension)?")
+inp = input("which file would you want to run (exclude the .dusk extension)?  ")
 file_name = f"{inp}.dusk"
 if inp:
     if file_name not in parsed_files:
