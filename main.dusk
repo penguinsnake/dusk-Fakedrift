@@ -23,12 +23,4 @@ mkdir|test
 time|time
 @gets the local time and assigns it to a variable
 print|time
-cdir|exampleFolder
-cfil|exampleFolder|exampleFile
-writefil|exampleFolder|exampleFile|{
->start|dusk
->print|'hello world'
->assign|t|'this is my first script using dusk!'
->print|t
-}
 @run dusk-1.0-exe NOT dusk-1.0.py, well you can but unless you have everything installed it won't work
