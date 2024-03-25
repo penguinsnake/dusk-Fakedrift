@@ -1,3 +1,4 @@
-I WILL NO LONGER BE WORKING ON THIS PAGE BUT INSTEAD IN MY ORGANIZATION, LINK TO THE REPO:
+# Welcome to....
 
-[dusk-Fakedrift in penguinsnake](https://github.com/penguinsnake/dusk-Fakedrift)
+
+![dusk-logo](https://github.com/penguinsnake/dusk-Fakedrift/assets/127430703/f5024f40-09e6-4526-a04c-09185ddc5900)
