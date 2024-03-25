@@ -41,23 +41,29 @@ class Dusk:
 
     def _input_command(self, args):
         if len(args) != 2:
-            return "Error: Invalid input command. Usage: input <variable_name> <message>"
+            return "Error: Invalid input command. Usage: <variable_name> <message>"
         var_name = args[0]
         message = args[1]
         message = message.replace("'", "")
         self.variables[var_name] = input(message)
 
     def _error_throw(self, args):
-        if len(args) != 1:
-            return "Error: Wow an error from the error_throw command, smart. Usage: <message>"
+        if len(args) != 2:
+            return "Error: Wow an error from the error_throw command, smart. Usage: <message> <error or warning>"
         message = args[0]
         message = message.replace("'", "")
-        print(f"Error: {message}")
-        sys.exit()
+        ew = args[1]
+        if ew == "error":
+            print(f"Error: {message}")
+            sys.exit()
+        elif ew == "warning":
+            print(f"Warning: {message}")
+        else:
+            print(f"dusk-1.1.3.py says: kys mr. {message}")
 
     def _sroot_command(self, args):
         if len(args) != 2:
-            return "Error: Invalid sroot command. Usage: sroot <variable_name> <input>"
+            return "Error: Invalid sroot command. Usage: <variable_name> <input>"
         var_name = args[0]
         input_value = args[1]
         if input_value in self.variables:
@@ -72,7 +78,7 @@ class Dusk:
 
     def _scriptint_command(self, args):
         if len(args) < 2:
-            return "Error: Invalid scriptint command. Usage: scriptint <script_name> <arg1> <arg2> <arg3> ..."
+            return "Error: Invalid scriptint command. Usage: <script_name> <arg1> <arg2> <arg3> ..."
         var_name = args[0]
         script_name = args[1] + '.py'  # Adjust if your naming convention differs
         if args[2] != '.n':
@@ -99,7 +105,7 @@ class Dusk:
 
     def _cdir_command(self, args):
         if len(args) != 1:
-            return "Error: Invalid cdir command. Usage: cdir <directory_name>"
+            return "Error: Invalid cdir command. Usage: <directory_name>"
         directory_name = args[0]
         try:
             os.mkdir(directory_name)
@@ -110,7 +116,7 @@ class Dusk:
 
     def _deldir_command(self, args):
         if len(args) != 1:
-            return "Error: Invalid deldir command. Usage: deldir <directory_name>"
+            return "Error: Invalid deldir command. Usage: <directory_name>"
         directory_name = args[0]
         try:
             os.rmdir(directory_name)
@@ -122,7 +128,7 @@ class Dusk:
     def _function_command(self, args):
         # Check if the command has at least 2 arguments
         if len(args) < 2:
-            return "Error: Invalid function command. Usage: function <function_name> {<function_body>}"
+            return "Error: Invalid function command. Usage: <function_name> {<function_body>}"
 
         # Extract function name and function body
         function_name = args[0]
@@ -156,7 +162,7 @@ class Dusk:
     def _writefil_command(self, args):
         # Check if the command has at least 4 arguments
         if len(args) < 4:
-            return "Error: Invalid writefil command. Usage: writefil <directory>|<file_name>|<file_extension>{<file_content>}"
+            return "Error: Invalid writefil command. Usage: <directory>|<file_name>|<file_extension>{<file_content>}"
 
         # Extract arguments
         directory_name, file_name, file_extension = args[:3]
@@ -188,7 +194,7 @@ class Dusk:
 
     def _cfil_command(self, args):
         if len(args) != 3:
-            return "Error: Invalid cfil command. Usage: cfil <directory_name>|<file_name>|<file_extension>"
+            return "Error: Invalid cfil command. Usage: <directory_name>|<file_name>|<file_extension>"
         directory_name, file_name, file_extension = args
         try:
             # Concatenate directory path and file name
@@ -204,7 +210,7 @@ class Dusk:
 
     def _delfil_command(self, args):
         if len(args) != 2:
-            return "Error: Invalid delfil command. Usage: delfil <directory_name> <file_name>"
+            return "Error: Invalid delfil command. Usage: <directory_name> <file_name>"
         directory_name, file_name = args
         try:
             os.remove(os.path.join(directory_name, file_name))
@@ -323,14 +329,14 @@ class Dusk:
 
     def _time_command(self, args):
         if len(args) != 1:
-            return "Error: Invalid time command. Usage: time <variable_name>"
+            return "Error: Invalid time command. Usage: <variable_name>"
         variable_name = args[0]
         current_time = time.strftime("%H:%M:%S", time.localtime())
         self.variables[variable_name] = current_time
 
     def _de_assign_command(self, args):
         if len(args) != 1:
-            return "Error: Invalid de-assign command. Usage: dassign <variable_name>"
+            return "Error: Invalid de-assign command. Usage: <variable_name>"
         variable_name = args[0]
         if variable_name in self.variables:
             del self.variables[variable_name]

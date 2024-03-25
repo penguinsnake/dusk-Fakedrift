@@ -1,3 +1,0 @@
-functions
-input
-dusk-based scriptint

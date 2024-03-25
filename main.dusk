@@ -1,6 +1,6 @@
 start|dusk
 dfunction|end|{
->errorthrow|'This might be the last update :('
+>errorthrow|'This might be the last update :('|error
 >@errorthrow well throws an error and stops the program
 }
 @start|dusk must be at the first line btw
