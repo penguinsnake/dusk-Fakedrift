@@ -37,7 +37,7 @@ writefil|exampleFolder|exampleFile|dusk{
 @run dusk-1.0-exe NOT dusk-1.0.py, well you can but unless you have everything installed it won't work
 scriptint|al|greater|4|10
 print|al
-@doesn't accept any variables yet, but it will be added in later versions
+@this interacts with python scripts, check out greater.py for a custom command that has input and output and check window.py for neither
 dfunction|test|{
 >assign|a|3
 >assign|b|4

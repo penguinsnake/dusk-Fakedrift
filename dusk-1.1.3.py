@@ -72,10 +72,17 @@ class Dusk:
 
     def _scriptint_command(self, args):
         if len(args) < 2:
-            return "Error: Invalid scriptint command. Usage: scriptint <script_name> <arg1> [<arg2> [<arg3>]]"
+            return "Error: Invalid scriptint command. Usage: scriptint <script_name> <arg1> <arg2> <arg3> ..."
         var_name = args[0]
         script_name = args[1] + '.py'  # Adjust if your naming convention differs
-        script_args = args[2:]
+        if args[2] != '.n':
+            script_args = args[2:]
+            for i, arg in enumerate(script_args):
+                if arg in self.variables:
+                    script_args[i] = self.variables[arg]
+        else:
+            script_args = ["none given, running error check",  "isModdedDusk?: False", "reason: error: .n used in scriptint command"]
+            print(script_args)
         
         try:
             # Run the script and capture its stdout
@@ -83,7 +90,8 @@ class Dusk:
             # Evaluate the output to Python data structure
             ovars = ast.literal_eval(result.stdout.strip())
             # Assign the output to the variables dictionary
-            self.variables[var_name] = ovars
+            if var_name != '.n':
+                self.variables[var_name] = ovars
         except sub.CalledProcessError as e:
             print(f"Error executing script: {e}")
         except ValueError:
