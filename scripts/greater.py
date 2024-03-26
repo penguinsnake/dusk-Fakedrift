@@ -3,6 +3,7 @@ def greater(args):
         return "Error: Invalid number of arguments"
     try:
         # Convert arguments to integers
+        # If an error occurs, return "Error: Non-integer arguments provided"
         num1 = int(args[0])
         num2 = int(args[1])
         # Return True if num1 is greater than num2, else False
