@@ -5,11 +5,16 @@ import tkinter as tk
 import time
 import os
 import math
+import json
 
 class Dusk:
     def __init__(self):
         self.variables = {}
+        isModdedDusk = False
+        global error_check
+        error_check = f"isModdedDusk?: {str(isModdedDusk)} reason:"
         self.functions = {}
+        self.included = {}
         self.command_tags = {  # Define command_tags attribute for multi-line content
             'writefil': True,
             'dfunction': True,
@@ -77,22 +82,24 @@ class Dusk:
         self.variables[var_name] = output
 
     def _scriptint_command(self, args):
-        if len(args) < 2:
-            return "Error: Invalid scriptint command. Usage: <script_name> <arg1> <arg2> <arg3> ..."
+        if len(args) < 3:
+            return "Error: Invalid scriptint command. Usage: <output_var> <script_name> <arg1> <arg2> <arg3> ..."
         var_name = args[0]
-        script_name = args[1] + '.py'  # Adjust if your naming convention differs
+        script_name = args[1] + '.py'
+        full_path = os.path.join('scripts', script_name)
+        full_path = full_path.replace("\\", "/")
         if args[2] != '.n':
             script_args = args[2:]
             for i, arg in enumerate(script_args):
                 if arg in self.variables:
                     script_args[i] = self.variables[arg]
         else:
-            script_args = ["none given, running error check",  "isModdedDusk?: False", "reason: error: .n used in scriptint command"]
+            script_args = ["none given, running error check",  f"{error_check} .n used in scriptint command"]
             print(script_args)
         
         try:
             # Run the script and capture its stdout
-            result = sub.run(['python', script_name, *script_args], capture_output=True, text=True, check=True)
+            result = sub.run(['python', full_path, *script_args], capture_output=True, text=True, check=True)
             # Evaluate the output to Python data structure
             ovars = ast.literal_eval(result.stdout.strip())
             # Assign the output to the variables dictionary
