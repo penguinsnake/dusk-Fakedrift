@@ -1,4 +1,4 @@
-# CURRENTLY IN BETA
+# CURRENTLY IN 1.3-2 BETA
 
 
 # Welcome to....

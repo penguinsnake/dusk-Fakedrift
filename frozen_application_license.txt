@@ -23,7 +23,7 @@ License for cx_Freeze
 ---------------------
 
 1. This LICENSE AGREEMENT is between the copyright holders and the Individual
-   or Organization ("Licensee") accessing and otherwise using cx_Freeze
+   or Organization ("licensee") accessing and otherwise using cx_Freeze
    software in source or binary form and its associated documentation.
 
 2. Subject to the terms and conditions of this License Agreement, the

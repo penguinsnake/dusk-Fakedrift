@@ -6,6 +6,7 @@ import time
 import os
 import math
 import json
+#1.3-2 BETA
 
 class Dusk:
     def __init__(self):
