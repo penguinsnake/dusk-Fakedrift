@@ -6,3 +6,5 @@
 ㅤ
 
 dusk is a general purpose language written in python
+
+[DEPRECATED] if you want you can work on this. (open-sourced)
